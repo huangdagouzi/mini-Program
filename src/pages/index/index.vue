@@ -13,6 +13,7 @@
           <swiper-item>
             <image :src="item" class="slide-image" />
           </swiper-item>
+          
         </div>
       </swiper>
   </div>
