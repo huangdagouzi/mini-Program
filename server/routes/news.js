@@ -1,5 +1,5 @@
 var express = require('express');
-var news = require('../models/image');
+var news = require('../models/news');
 var mongoose = require('mongoose');
 var utils = require('../utils');
 var fs = require('fs');

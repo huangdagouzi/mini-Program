@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 
-var swiperImgSchema = new mongoose.Schema({
+var newsSchema = new mongoose.Schema({
     title: { type: String },
     source: { type: String },
     author: { type: String },
@@ -12,6 +12,6 @@ var swiperImgSchema = new mongoose.Schema({
     description: { type: String },
 });
 
-var newsModel = mongoose.model('image', swiperImgSchema, 'image');
+var newsModel = mongoose.model('news', newsSchema, 'news');
 
-module.exports = { 'Schema': swiperImgSchema, 'Model': swiperImgModel };
+module.exports = { 'Schema': newsSchema, 'Model': newsModel };

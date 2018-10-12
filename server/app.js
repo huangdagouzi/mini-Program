@@ -21,8 +21,8 @@ var LocalStrategy = require('passport-local').Strategy;
 var user = require('./models/user').Model;
 
 var mongoose = require('mongoose');
-// mongoose.connect('mongodb://rongdu:NShuNtTpmOXCD9mF@112.124.32.16:27017/erongdu');
-mongoose.connect('mongodb://localhost:27017/mydb');
+mongoose.connect('mongodb://rongdu:NShuNtTpmOXCD9mF@112.124.32.16:27017/erongdu');
+// mongoose.connect('mongodb://localhost:27017/erongdu');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -37,17 +37,51 @@ app.all("*", function(req, res, next) {
     next();
 });
 
+app.use("/", function(req, res, next) {
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("Content-Type", "text/html;charset=utf-8");
+    next();
+});
+
+app.use("/static", function(req, res, next) {
+    res.header("Access-Control-Allow-Credentials", true);
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods", "PUT,POST,GET,DELETE,OPTIONS");
+    res.header("Content-Type", "text/css;charset=utf-8");
+    next();
+});
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json({ limit: '50mb' }));
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'erongdu.com',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(express.static(path.join(__dirname, 'dist')))
 
 app.use('/', index);
+app.use('/users', users);
+app.use('/slideImg', slideImg);
+app.use('/news', news);
 
 
 console.log('success')
+    // passport config
+var User = require('./models/user').Model;
+passport.use(User.createStrategy());
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
